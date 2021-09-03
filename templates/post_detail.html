@@ -1,0 +1,52 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 card mb-4 mt-3 left top">
+      <div class="card-body">
+        <h1>{% block title %} {{ post.title }} {% endblock title %}</h1>
+        <p>{{ post.author }} | {{ post.pub_date }}</p>
+        <p>{{ post.content | safe }}</p>
+      </div>
+    </div>
+    {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
+
+    <div class="col-md-8 card mb-4  mt-3">
+      <div class="card-body">
+        <!-- comments -->
+        <h2>{{ comments.count }} comments</h2>
+
+        {% for comment in comments %}
+        <div class="comments">
+          <p style="font-weight: bold">
+            {{ comment.name }}
+            <span style="color: #aaaaaa">
+              {{ comment.pub_date }}
+            </span>
+          </p>
+          {{ comment.content | linebreaks }}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-md-8 card mb-4  mt-3 ">
+      <div class="card-body">
+        {% if new_comment %}
+        <div role="alert">
+          Your comment is awaiting moderation
+        </div>
+        {% else %}
+        {% load crispy_forms_tags %}
+        <h3>Leave a comment</h3>
+        <form method="post" style="margin-top: 1.3em;">
+          {{ comment_form | crispy }}
+          {% csrf_token %}
+          <button type="submit">Submit</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
