@@ -3,6 +3,7 @@ from django.views import generic
 from .models import Post
 from .forms import CommentForm
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import logout
 
 
 class PostList(generic.ListView):
@@ -39,3 +40,8 @@ def post_detail(request, slug):
             'comment_form': comment_form
         }
     )
+
+
+def logout_view(request):
+    if request.user.is_authenticated:
+        console.log('test')
